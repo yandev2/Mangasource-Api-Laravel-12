@@ -151,10 +151,7 @@ class ApiController extends Controller
             $crawler = $browser->request('GET', $url);
             $filter = $crawler->filter('.listupd .animposx');
             $data = $this->service_content($filter);
-            $response = [
-                'data' => $data->take(5)
-            ];
-            return new ArrayResource(true, '', $response);
+            return new ArrayResource(true, '', $data);
         } catch (\Throwable $th) {
             return new ArrayResource(false, $this->errorMsg, null);
         }
@@ -370,7 +367,7 @@ class ApiController extends Controller
     public function manga_detail($url)
     {
         try {
-            
+
             $urls = $this->baseUrl . 'komik/' . $url;
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $urls);
