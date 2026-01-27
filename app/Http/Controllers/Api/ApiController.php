@@ -129,12 +129,24 @@ class ApiController extends Controller
     public function manga_query_dashboard($key, $value)
     {
         try {
-            $url =  $this->baseUrl . 'daftar-manga/?' . $key . '%5B%5D=' . $value . '&status=&type=&format=0&order=&title=';
+            $url = '';
+            if (strtolower($key) == 'status') {
+                $url = $this->baseUrl . 'daftar-manga/?status=' . $value . '&type=&format=0&order=&title=';
+            } else if (strtolower($key) == 'konten') {
+                $url = $this->baseUrl . 'daftar-manga/?konten%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
+            } else if (strtolower($key) == 'type') {
+                $url = $this->baseUrl . 'daftar-manga/?status=&type=' . $value . '&format=&order=&title=';
+            } else if (strtolower($key) == 'genre') {
+                $url = $this->baseUrl . 'daftar-manga/?genre%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
+            }else{
+                $url = $this->baseUrl . 'daftar-manga/?demografis%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
+            }
+         
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $url);
             $filter = $crawler->filter('.listupd .animposx');
             $data = $this->service_content($filter);
-             return new ArrayResource(true, '', $data);
+            return new ArrayResource(true, '', $data);
         } catch (\Throwable $th) {
             return new ArrayResource(false, $this->errorMsg, null);
         }
