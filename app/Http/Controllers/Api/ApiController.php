@@ -135,7 +135,7 @@ class ApiController extends Controller
             } else if (strtolower($key) == 'konten') {
                 $url = $this->baseUrl . 'daftar-manga/?konten%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
             } else if (strtolower($key) == 'type') {
-                $url = $this->baseUrl . 'daftar-manga/?status=&type=' . $value . '&format=&order=&title=';
+                $url = $this->baseUrl . 'daftar-manga/'. $value;
             } else if (strtolower($key) == 'genre') {
                 $url = $this->baseUrl . 'daftar-manga/?genre%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
             }else{
@@ -145,7 +145,7 @@ class ApiController extends Controller
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $url);
             $filter = $crawler->filter('.listupd .animposx');
-            $data = $this->service_content($filter);
+            $data = $this->service_content($filter)->take(7);
             return new ArrayResource(true, '', $data);
         } catch (\Throwable $th) {
             return new ArrayResource(false, $this->errorMsg, null);
@@ -159,7 +159,7 @@ class ApiController extends Controller
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $url);
             $filter = $crawler->filter('.listupd .animposx');
-            $data = $this->service_content($filter);
+            $data = $this->service_content($filter)->take(7);
             return new ArrayResource(true, '', $data);
         } catch (\Throwable $th) {
             return new ArrayResource(false, $this->errorMsg, null);
