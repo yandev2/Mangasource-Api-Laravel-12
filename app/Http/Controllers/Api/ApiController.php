@@ -452,6 +452,7 @@ class ApiController extends Controller
                     }
                 }
             }
+            $data['genre'] =  $filter->filter('.infox .genre-info ')->children('a')->count() == 0 ?[]: $filter->filter('.infox .genre-info ')->children('a')->each(fn($v) => $v->text()) ;
 
             $data['chapter'] = $filter->filter('.eps_lst #chapter_list')->children('ul')->children('li')->count() == 0 ? [] : $filter->filter('.eps_lst #chapter_list')->children('ul')->children('li')->each(function ($v) {
                 return  [
