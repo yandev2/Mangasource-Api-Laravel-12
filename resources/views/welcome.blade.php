@@ -288,6 +288,7 @@
             '/manga_genre_page/{genre}/{page}',
             '/manga_status_page/{status}/{page}',
             '/manga_theme_page/{theme}/{page}',
+            '/manga_konten_page/{konten}/{page}',
             '/manga_all_page/{page}',
             ];
             @endphp
