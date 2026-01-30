@@ -189,6 +189,81 @@
         <!-- Endpoint: 1 -->
         <div class="bg-white p-5 rounded-lg shadow-md mb-5">
             <div class="flex items-center justify-between space-x-4 mb-5">
+                <h3 class="text-xl text-black-500 font-extrabold">MANGA COLOR</h3>
+                <button onclick="window.open('https://mangasource.vercel.app/api/api/manga_color', '_blank')"
+                    class="bg-amber-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    Try
+                </button>
+            </div>
+
+            <p class="mb-3"> <code class="bg-gray-200 p-1 rounded"><span class="text-blue-600">base
+                            url</span>/manga_color</code>
+            </p>
+
+            <div class="bg-gray-50 p-3 mt-4 border-l-4 border-blue-500">
+                <strong class="text-gray-700">Example Response:</strong>
+                <pre class="bg-gray-100 p-3 rounded mt-2">
+                  {
+                    "success": bolean,
+                    "message": "",
+                    "data": [
+                       {
+                          "title": "string",
+                          "ratting": "string",
+                          "category": "string",
+                          "type": "string",
+                          "chapter": string,
+                          "update": string,
+                          "img": "string",
+                          "url": "string"
+                       },
+                    ]
+                  }
+              </pre>
+            </div>
+        </div>
+
+        <!-- Endpoint: 1 -->
+        <div class="bg-white p-5 rounded-lg shadow-md mb-5">
+            <div class="flex items-center justify-between space-x-4 mb-5">
+                <h3 class="text-xl text-black-500 font-extrabold">MANGA BLACK & WHITE</h3>
+                <button onclick="window.open('https://mangasource.vercel.app/api/api/manga_bw', '_blank')"
+                    class="bg-amber-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
+                    Try
+                </button>
+            </div>
+
+            <p class="mb-3"> <code class="bg-gray-200 p-1 rounded"><span class="text-blue-600">base
+                            url</span>/manga_bw</code>
+            </p>
+
+            <div class="bg-gray-50 p-3 mt-4 border-l-4 border-blue-500">
+                <strong class="text-gray-700">Example Response:</strong>
+                <pre class="bg-gray-100 p-3 rounded mt-2">
+                  {
+                    "success": bolean,
+                    "message": "",
+                    "data": [
+                       {
+                          "title": "string",
+                          "ratting": "string",
+                          "category": "string",
+                          "type": "string",
+                          "chapter": string,
+                          "update": string,
+                          "img": "string",
+                          "url": "string"
+                       },
+                    ]
+                  }
+              </pre>
+            </div>
+        </div>
+
+
+        <!-- Endpoint: 1 -->
+        <div class="bg-white p-5 rounded-lg shadow-md mb-5">
+            <div class="flex items-center justify-between space-x-4 mb-5">
                 <h3 class="text-xl text-black-500 font-extrabold">MANGA QUERY</h3>
                 <button onclick="window.open('https://mangasource.vercel.app/api/api/genre', '_blank')"
                     class="bg-amber-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
