@@ -37,6 +37,8 @@ Route::get('/manga_type_page/{type}/{page}', [ApiController::class, 'manga_type_
 Route::get('/manga_genre_page/{genre}/{page}', [ApiController::class, 'manga_genre_page']);
 Route::get('/manga_status_page/{status}/{page}', [ApiController::class, 'manga_status_page']);
 Route::get('/manga_theme_page/{theme}/{page}', [ApiController::class, 'manga_theme_page']);
+Route::get('/manga_konten_page/{konten}/{page}', [ApiController::class, 'manga_konten_page']);
+
 Route::get('/manga_all_page/{page}', [ApiController::class, 'manga_all_page']);
 
 

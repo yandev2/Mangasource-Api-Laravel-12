@@ -59,7 +59,7 @@ class ApiController extends Controller
             throw $th;
         }
     }
-    
+
     public function service_page($crawler, $crawler2)
     {
         $currentPage = '1';
@@ -340,6 +340,30 @@ class ApiController extends Controller
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $url);
             $crawler2 = $browser->request('GET',  $this->baseUrl . 'daftar-manga/?status=' . $status . '&type=&format=&order=&title=');
+            $filter = $crawler->filter('.listupd .animposx');
+            $data = $this->service_content($filter);
+            $pagination =  $this->service_page($crawler, $crawler2);
+            $response = [
+                'current_page' => $pagination['current_page'],
+                'total_page' => $pagination['total_page'],
+                'data' =>  $data
+            ];
+
+            return new ArrayResource(true, '', $response);
+        } catch (\Throwable $th) {
+            return new ArrayResource(false, $this->errorMsg, null);
+        }
+    }
+
+      public function manga_konten_page($konten, $page)
+    {
+        try {
+            $url = $page == '1'
+                ? $this->baseUrl . 'daftar-manga/?konten%5B%5D=' . $konten . '&status=&type=&format=&order=&title='
+                : $this->baseUrl . 'daftar-manga/page/' . $page . '/?konten%5B%5D=' . $konten . '&status=&type=&format=&order=&title=';
+            $browser = new HttpBrowser(HttpClient::create());
+            $crawler = $browser->request('GET', $url);
+            $crawler2 = $browser->request('GET',  $this->baseUrl . 'daftar-manga/?konten%5B%5D=' . $konten . '&status=&type=&format=&order=&title=');
             $filter = $crawler->filter('.listupd .animposx');
             $data = $this->service_content($filter);
             $pagination =  $this->service_page($crawler, $crawler2);
