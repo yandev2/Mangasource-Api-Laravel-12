@@ -13,12 +13,11 @@ Route::get('/type', [ApiController::class, 'type']);
 Route::get('/status', [ApiController::class, 'status']);
 Route::get('/theme', [ApiController::class, 'theme']);
 
-
-
-
 // dashboard
 Route::get('/manga_popular', [ApiController::class, 'manga_popular']);
 Route::get('/manga_terbaru', [ApiController::class, 'manga_terbaru']);
+Route::get('/manga_color', [ApiController::class, 'manga_color']);
+Route::get('/manga_bw', [ApiController::class, 'manga_bw']);
 
 // key = type - genre - status - konten - demografis
 // type = Manga - Manhwa - Manhua

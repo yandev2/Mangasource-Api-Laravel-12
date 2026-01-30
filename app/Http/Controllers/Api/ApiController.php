@@ -193,6 +193,34 @@ class ApiController extends Controller
         }
     }
 
+     public function manga_color()
+    {
+        try {
+            $url =  $this->baseUrl . 'komik-berwarna/';
+            $browser = new HttpBrowser(HttpClient::create());
+            $crawler = $browser->request('GET', $url);
+            $filter = $crawler->filter('.listupd .animposx');
+            $data = $this->service_content($filter)->take(7);
+            return new ArrayResource(true, '', $data);
+        } catch (\Throwable $th) {
+            return new ArrayResource(false, $this->errorMsg, null);
+        }
+    }
+
+      public function manga_bw()
+    {
+        try {
+            $url =  $this->baseUrl . 'daftar-manga/?status=&type=&format=bw&order=&title=';
+            $browser = new HttpBrowser(HttpClient::create());
+            $crawler = $browser->request('GET', $url);
+            $filter = $crawler->filter('.listupd .animposx');
+            $data = $this->service_content($filter)->take(7);
+            return new ArrayResource(true, '', $data);
+        } catch (\Throwable $th) {
+            return new ArrayResource(false, $this->errorMsg, null);
+        }
+    }
+
     public function manga_search($query)
     {
         try {
