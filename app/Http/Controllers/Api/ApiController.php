@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArrayResource;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpClient\HttpClient;
@@ -24,7 +25,7 @@ class ApiController extends Controller
                         ? $v->filter('.tt')->text()
                         : null,
                     'ratting' => $v->filter('.adds .rating')->count() > 0
-                        ? $v->filter('.adds .rating')->children('i')->text()
+                        ? $v->filter('.adds .rating')->text()
                         : null,
                     'category' => $v->filter('.warnalabel')->count() > 0
                         ? $v->filter('.warnalabel')->text()
@@ -58,20 +59,46 @@ class ApiController extends Controller
             throw $th;
         }
     }
-
+    
     public function service_page($crawler, $crawler2)
     {
-        try {
-            $page = $crawler->filter('.pagination');
-            $page2 = $crawler2->filter('.pagination');
-            return  [
-                'current_page' => $page->filter('.page-numbers.current')->text(),
-                'total_page' => $page2->filter('.page-numbers')->eq($page2->filter('.page-numbers')->count() - 2)->text(),
-            ];
-        } catch (\Throwable $th) {
-            throw $th;
+        $currentPage = '1';
+        $totalPage   = '1';
+
+        // =====================
+        // CURRENT PAGE (AMAN)
+        // =====================
+        $crawler->filter('.pagination .page-numbers.current')->each(function ($node) use (&$currentPage) {
+            $currentPage = trim($node->text());
+        });
+
+        // =====================
+        // TOTAL PAGE (AMAN TOTAL)
+        // =====================
+        $pages = [];
+
+        $crawler2->filter('.pagination .page-numbers')->each(function ($node) use (&$pages) {
+            $text = trim($node->text());
+
+            // Ambil HANYA ANGKA
+            if (ctype_digit($text)) {
+                $pages[] = (int) $text;
+            }
+        });
+
+        if (!empty($pages)) {
+            $totalPage = (string) max($pages);
         }
+
+        return [
+            'current_page' => $currentPage,
+            'total_page'   => $totalPage,
+        ];
     }
+
+
+
+
 
     public function genre()
     {
@@ -135,13 +162,13 @@ class ApiController extends Controller
             } else if (strtolower($key) == 'konten') {
                 $url = $this->baseUrl . 'daftar-manga/?konten%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
             } else if (strtolower($key) == 'type') {
-                $url = $this->baseUrl . 'daftar-manga/'. $value;
+                $url = $this->baseUrl . 'daftar-manga/' . $value;
             } else if (strtolower($key) == 'genre') {
                 $url = $this->baseUrl . 'daftar-manga/?genre%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
-            }else{
+            } else {
                 $url = $this->baseUrl . 'daftar-manga/?demografis%5B%5D=' . $value . '&status=&type=&format=&order=&title=';
             }
-         
+
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $url);
             $filter = $crawler->filter('.listupd .animposx');
@@ -284,9 +311,11 @@ class ApiController extends Controller
             $url = $page == '1'
                 ? $this->baseUrl . 'daftar-manga/?genre%5B%5D=' . $genre . '&status=&type=&format=0&order=&title='
                 : $this->baseUrl . 'daftar-manga/page/' . $page . '/?genre%5B0%5D=' . $genre . '&status&type&format=0&order&title';
+
             $browser = new HttpBrowser(HttpClient::create());
             $crawler = $browser->request('GET', $url);
             $crawler2 = $browser->request('GET',  $this->baseUrl . 'daftar-manga/?genre%5B%5D=' . $genre . '&status=&type=&format=0&order=&title=');
+
             $filter = $crawler->filter('.listupd .animposx');
             $data = $this->service_content($filter);
             $pagination =  $this->service_page($crawler, $crawler2);
@@ -298,7 +327,7 @@ class ApiController extends Controller
 
             return new ArrayResource(true, '', $response);
         } catch (\Throwable $th) {
-            return new ArrayResource(false, $this->errorMsg, null);
+            return new ArrayResource(false, $th->getMessage(), null);
         }
     }
 
@@ -452,7 +481,7 @@ class ApiController extends Controller
                     }
                 }
             }
-            $data['genre'] =  $filter->filter('.infox .genre-info ')->children('a')->count() == 0 ?[]: $filter->filter('.infox .genre-info ')->children('a')->each(fn($v) => $v->text()) ;
+            $data['genre'] =  $filter->filter('.infox .genre-info ')->children('a')->count() == 0 ? [] : $filter->filter('.infox .genre-info ')->children('a')->each(fn($v) => $v->text());
 
             $data['chapter'] = $filter->filter('.eps_lst #chapter_list')->children('ul')->children('li')->count() == 0 ? [] : $filter->filter('.eps_lst #chapter_list')->children('ul')->children('li')->each(function ($v) {
                 return  [
