@@ -11,7 +11,7 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class ApiController extends Controller
 {
-    public $baseUrl = 'https://komikindo3.com/';
+    public $baseUrl = 'https://komikindo.ch/';
     public $errorMsg = 'oops, an error occurred while retrieving data';
 
 
